@@ -1,0 +1,9 @@
+[project]
+name = "tgs-backend"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.128.5",
+    "uvicorn>=0.40.0",
+]
