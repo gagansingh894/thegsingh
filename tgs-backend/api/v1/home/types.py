@@ -6,11 +6,11 @@ class Resume(BaseModel):
     content_type: str
 
 class ProfilePicture(BaseModel):
+    url: str
     content_type: str
-    data: str
 
 class SocialLinks(BaseModel):
-    github_url: str
+    github: str
     linked_in: str
 
 class Profile(BaseModel):
