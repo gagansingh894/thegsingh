@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
 
-from api.v1.home.types import HomeResponse, ContactDetailsResponse, HireMeRequest
+from api.v1.home.types import HomeResponse, ContactDetailsResponse, HireMeRequest, HealthCheck
 from services.home import HomeService
 from services.project import ProjectService
 from services.resume import ResumeService
@@ -23,6 +23,10 @@ class HomeAPI:
 
     def router(self) -> APIRouter:
         router = APIRouter()
+
+        @router.get("/health")
+        async def health_check():
+            return jsonable_encoder(HealthCheck(status="OK"))
 
         @router.get("/home")
         async def home():

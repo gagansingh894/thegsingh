@@ -33,3 +33,6 @@ class HireMeRequest(BaseModel):
     email_address: str
     phone_number: str
     message: str
+
+class HealthCheck(BaseModel):
+    status: str = "OK"
