@@ -1,7 +1,7 @@
 use crate::domain;
 use crate::services::portfolio;
 
-use super::models::{AboutDetail, PortfolioResponse, Project, SkillGroup, TimelineEntry};
+use super::models::{AboutDetail, PortfolioResponse, Project, SkillGroup, Socials, TimelineEntry};
 
 impl From<domain::AboutDetail> for AboutDetail {
     fn from(value: domain::AboutDetail) -> Self {
@@ -12,6 +12,11 @@ impl From<domain::AboutDetail> for AboutDetail {
             interests: value.interests,
             highlight: value.highlight,
             introduction: value.introduction,
+            socials: Socials {
+                github: value.socials.github,
+                linkedin: value.socials.linkedin,
+                email: value.socials.email,
+            },
         }
     }
 }

@@ -1,5 +1,5 @@
 use crate::domain::{
-    AboutDetail, Location, Project, Skill, SkillGroup, SkillGroupTitle, TimelineEntry,
+    AboutDetail, Location, Project, Skill, SkillGroup, SkillGroupTitle, TimelineEntry, Socials
 };
 use crate::repo::{PortfolioResponse, Repo};
 use anyhow::Error;
@@ -30,6 +30,11 @@ impl InMemoryRepo {
                 ],
                 highlight: "6+ years building distributed systems across ad tech, finance, delivery and ML serving at Deliveroo. Scaled ML serving platforms to high throughput at low latency, designed targeting and scheduling algorithms across the ad platform, launched Ad Credits and Co-Funded Campaigns that unlocked significant revenue, engineered billing infrastructure for complex franchise hierarchies, and shipped event-driven delivery platforms at scale.".to_string(),
                 introduction: "I care deeply about clean architecture, correctness, and systems that don't page you in the middle of the night. Most of my work sits at the intersection of backend engineering and data-intensive applications — from polyglot microservices to end-to-end MLOps.".to_string(),
+                socials: Socials {
+                    github: "https://github.com/gagansingh894".to_string(),
+                    linkedin: "https://linkedin.com/in/gagandeepsingh894".to_string(),
+                    email: "gds31.gagandeepsingh@gmail.com".to_string(),
+                },
             },
 
             skills: vec![

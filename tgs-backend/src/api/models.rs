@@ -16,6 +16,7 @@ pub struct AboutDetail {
     pub interests: Vec<String>,
     pub highlight: String,
     pub introduction: String,
+    pub socials: Socials
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -40,4 +41,11 @@ pub struct TimelineEntry {
     pub period: String,
     pub current: bool,
     pub bullets: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Socials {
+    pub github: String,
+    pub linkedin: String,
+    pub email: String
 }

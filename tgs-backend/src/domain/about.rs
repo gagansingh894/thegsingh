@@ -7,10 +7,19 @@ pub struct AboutDetail {
 
     pub highlight: String,
     pub introduction: String,
+
+    pub socials: Socials
 }
 
 #[derive(Debug, Clone)]
 pub struct Location {
     pub state: String,
     pub country: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct Socials {
+    pub github: String,
+    pub linkedin: String,
+    pub email: String
 }
