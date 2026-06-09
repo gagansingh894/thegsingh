@@ -1,6 +1,8 @@
-import { skillGroups } from "@/lib/data";
+import type { SkillGroup } from "@/types";
 
-export default function Skills() {
+interface Props { skills: SkillGroup[] }
+
+export default function Skills({ skills }: Props) {
   return (
     <section id="skills" className="py-[100px] px-10 max-w-[1200px] mx-auto">
       <div className="mb-14 pb-5 border-b border-tgs-border">
@@ -14,7 +16,7 @@ export default function Skills() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {skillGroups.map((group) => (
+        {skills.map((group) => (
           <div key={group.title}>
             <div className="font-mono text-[11px] text-tgs-muted tracking-[0.1em] uppercase mb-5 pb-3 border-b border-tgs-border">
               {group.title}

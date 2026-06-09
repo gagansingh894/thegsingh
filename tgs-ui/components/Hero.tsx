@@ -1,7 +1,10 @@
 import Image from "next/image";
 import SocialLink from "@/components/SocialLink";
+import type { PortfolioAbout } from "@/types";
 
-export default function Hero() {
+interface Props { about: PortfolioAbout }
+
+export default function Hero({ about }: Props) {
   return (
     <div className="relative min-h-screen pt-16 flex items-center overflow-hidden">
 
@@ -107,9 +110,9 @@ export default function Hero() {
             className="animate-fade-in-up flex gap-5"
             style={{ animationDelay: "1260ms" }}
           >
-            <SocialLink href="https://github.com/gagansingh894" label="GitHub" type="github" className="text-tgs-dim hover:text-tgs-muted" />
-            <SocialLink href="https://linkedin.com/in/gagandeepsingh894" label="LinkedIn" type="linkedin" className="text-tgs-dim hover:text-tgs-muted" />
-            <SocialLink href="mailto:gagandeep@thegsingh.com" label="Email" type="email" className="text-tgs-dim hover:text-tgs-muted" />
+            <SocialLink href={about.socials.github} label="GitHub" type="github" className="text-tgs-dim hover:text-tgs-muted" />
+            <SocialLink href={about.socials.linkedin} label="LinkedIn" type="linkedin" className="text-tgs-dim hover:text-tgs-muted" />
+            <SocialLink href={`mailto:${about.socials.email}`} label="Email" type="email" className="text-tgs-dim hover:text-tgs-muted" />
           </div>
         </div>
 

@@ -1,6 +1,9 @@
+import type { TimelineEntry } from "@/types";
 import JourneyTimeline from "@/components/JourneyTimeline";
 
-export default function Journey() {
+interface Props { journey: TimelineEntry[] }
+
+export default function Journey({ journey }: Props) {
   return (
     <section id="journey" className="py-[100px] px-6 md:px-10 max-w-[1200px] mx-auto">
       <div className="mb-14 pb-5 border-b border-tgs-border">
@@ -16,7 +19,7 @@ export default function Journey() {
           engineering in Bangalore to distributed systems at scale in London.
         </p>
       </div>
-      <JourneyTimeline />
+      <JourneyTimeline journey={journey} />
     </section>
   );
 }

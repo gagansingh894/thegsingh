@@ -1,3 +1,4 @@
+import { getPortfolio } from "@/lib/tgs-client";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -9,25 +10,27 @@ import Footer from "@/components/Footer";
 import ChatBubble from "@/components/ChatBubble";
 import ScrollReveal from "@/components/ScrollReveal";
 
-export default function Home() {
+export default async function Home() {
+  const data = await getPortfolio();
+
   return (
     <>
       <Nav />
-      <Hero />
+      <Hero about={data.about} />
       <ScrollReveal>
-        <About />
+        <About about={data.about} />
       </ScrollReveal>
       <hr className="border-none h-px bg-tgs-border max-w-[1200px] mx-auto" />
       <ScrollReveal>
-        <Skills />
+        <Skills skills={data.skills} />
       </ScrollReveal>
       <hr className="border-none h-px bg-tgs-border max-w-[1200px] mx-auto" />
       <ScrollReveal>
-        <Journey />
+        <Journey journey={data.journey} />
       </ScrollReveal>
       <hr className="border-none h-px bg-tgs-border max-w-[1200px] mx-auto" />
       <ScrollReveal>
-        <Projects />
+        <Projects projects={data.projects} />
       </ScrollReveal>
       <hr className="border-none h-px bg-tgs-border max-w-[1200px] mx-auto" />
       <ScrollReveal>

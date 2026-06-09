@@ -1,11 +1,17 @@
-const details = [
-  { label: "Role", value: "Senior Software Engineer" },
-  { label: "Location", value: "London, UK" },
-  { label: "Currently", value: "White Label Delivery Platform @ Deliveroo (DoorDash)" },
-  { label: "Interests", value: "Distributed Systems, ML Systems, AI Agents" },
-];
+import type { PortfolioAbout } from "@/types";
 
-export default function About() {
+interface Props {
+  about: PortfolioAbout;
+}
+
+export default function About({ about }: Props) {
+  const details = [
+    { label: "Role",      value: about.role },
+    { label: "Location",  value: about.location },
+    { label: "Currently", value: about.currently },
+    { label: "Interests", value: about.interests.join(", ") },
+  ];
+
   return (
     <section id="about" className="py-[100px] px-10 max-w-[1200px] mx-auto">
       <div className="mb-14 pb-5 border-b border-tgs-border">
@@ -32,25 +38,11 @@ export default function About() {
 
         <div>
           <p className="font-mono text-[13px] leading-[1.9] text-tgs-body mb-4">
-            6+ years building distributed systems across ad tech, finance,
-            delivery and ML serving at Deliveroo. Scaled ML serving platforms
-            to high throughput at low latency, designed targeting and scheduling
-            algorithms across the ad platform, launched Ad Credits and Co-Funded
-            Campaigns that unlocked significant revenue, engineered billing
-            infrastructure for complex franchise hierarchies, and shipped
-            event-driven delivery platforms at scale.
+            {about.highlight}
           </p>
           <p className="font-mono text-[13px] leading-[1.9] text-tgs-body mb-4">
-            I care deeply about clean architecture, correctness, and systems
-            that don&apos;t page you in the middle of the night. Most of my work
-            sits at the intersection of backend engineering and data-intensive
-            applications — from polyglot microservices to end-to-end MLOps.
+            {about.introduction}
           </p>
-          {/*<p className="font-mono text-[13px] leading-[1.9] text-tgs-body mb-4">*/}
-          {/*  Outside work I build open-source tooling in Rust and Go, explore AI*/}
-          {/*  agent architectures, and maintain a knowledge base for engineering*/}
-          {/*  leadership at <span className="text-tgs-body underline decoration-tgs-border underline-offset-4">tech-lead</span>.*/}
-          {/*</p>*/}
           <div className="mt-7">
             <a
               href="#contact"

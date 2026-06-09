@@ -1,6 +1,8 @@
-import { projects } from "@/lib/data";
+import type { Project } from "@/types";
 
-export default function Projects() {
+interface Props { projects: Project[] }
+
+export default function Projects({ projects }: Props) {
   return (
     <section id="projects" className="py-[100px] px-10 max-w-[1200px] mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-14 pb-5 border-b border-tgs-border">
@@ -59,7 +61,7 @@ export default function Projects() {
                   rel={p.link.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="group/link font-mono text-[11px] text-tgs-muted no-underline tracking-[0.08em] uppercase inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-tgs-text"
                 >
-                  {p.linkLabel}
+                  {p.link_label}
                   <svg
                     width="12"
                     height="12"
