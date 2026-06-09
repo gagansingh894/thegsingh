@@ -1,4 +1,6 @@
 import { getPortfolio } from "@/lib/tgs-client";
+
+export const dynamic = "force-dynamic";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
