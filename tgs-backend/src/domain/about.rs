@@ -8,7 +8,7 @@ pub struct AboutDetail {
     pub highlight: String,
     pub introduction: String,
 
-    pub socials: Socials
+    pub socials: Socials,
 }
 
 #[derive(Debug, Clone)]
@@ -21,5 +21,5 @@ pub struct Location {
 pub struct Socials {
     pub github: String,
     pub linkedin: String,
-    pub email: String
+    pub email: String,
 }

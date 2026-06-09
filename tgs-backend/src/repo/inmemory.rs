@@ -1,5 +1,5 @@
 use crate::domain::{
-    AboutDetail, Location, Project, Skill, SkillGroup, SkillGroupTitle, TimelineEntry, Socials
+    AboutDetail, Location, Project, Skill, SkillGroup, SkillGroupTitle, Socials, TimelineEntry,
 };
 use crate::repo::{PortfolioResponse, Repo};
 use anyhow::Error;
