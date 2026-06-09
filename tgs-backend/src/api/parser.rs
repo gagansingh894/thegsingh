@@ -62,8 +62,8 @@ impl From<domain::TimelineEntry> for TimelineEntry {
     }
 }
 
-impl From<portfolio::Response> for PortfolioResponse {
-    fn from(value: portfolio::Response) -> Self {
+impl From<portfolio::ContentResponse> for PortfolioResponse {
+    fn from(value: portfolio::ContentResponse) -> Self {
         Self {
             about: value.about.into(),
             skills: value.skills.into_iter().map(Into::into).collect(),
