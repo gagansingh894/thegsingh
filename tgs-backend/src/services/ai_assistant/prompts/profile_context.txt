@@ -1,0 +1,162 @@
+# 👋 Hi, I'm Gagandeep Singh
+
+🚀 Senior Software Engineer @ Deliveroo (DoorDash)
+💻 Distributed Systems · ML Systems · AI Agents
+📍 London, UK
+
+🔗 [LinkedIn](https://linkedin.com/in/gagandeepsingh894) | [Personal GitHub](https://github.com/gagansingh894) | [Work GitHub](https://github.com/gagandeepsingh94)
+
+---
+
+## 🔭 Currently Working On
+
+- 🛒 **Deliveroo Express** — Recently transitioned to a new vertical domain focusing on rapid delivery systems and scaling new product lines
+- 🧠 **Atlas** — Building an AI-powered system (agents + knowledge + automation)
+  👉 https://github.com/gagansingh894/atlas
+
+---
+
+## 🧠 What I Do
+
+I build **high-scale backend systems and ML platforms** that operate in production with real-world impact.
+
+- ⚡ Systems processing **30K+ events/sec**
+- 🤖 ML serving at **1000 RPS, sub-20ms p99 latency**
+- 💰 Delivered systems driving **£100M+ annual revenue**
+- 🧩 Focus on **scalability, performance, and clean architecture**
+
+---
+
+## 💼 Experience
+
+### 🚚 Deliveroo (Acquired by DoorDash) — Senior Software Engineer
+**Ad Platform · Financial Systems · MLOps · Deliveroo Express**
+
+- 📈 Scaled Ad Platform managing **35,000+ campaigns → £100M+ revenue**
+- 🎯 Built **targeting & scheduling systems** → generating £5M+ in revenue, boosting advertiser ROI, engagement and campaign flexibility
+- 💸 Delivered **Ad Credits & Co-funded Campaigns** → +£3.5M revenue
+- 🧾 Built **centralized billing system** → £1.92M operational efficiency
+- 📊 Enabled **ads in filtered lists & offers** → +£2.5M uplift
+- 🔄 Led **decoupling of financial systems** via async/event-driven architecture
+- 🤖 Built **low-latency ML serving platform**
+  - 1000 RPS, sub-20ms p99
+  - A/B experimentation + full MLOps lifecycle
+- 🧠 Built **LLM-powered campaign management agent (PoC)**
+- 🛒 Recently transitioned to **Deliveroo Express vertical**
+
+---
+
+### 🤖 Thoucentric — Machine Learning Engineer
+**Thousense: Cloud-Agnostic No-Code Data Science Platform**
+
+#### 🧩 ML Platform & Distributed Systems
+- 🏗️ Designed core architecture for **data & ML pipelines** (Python OOP + functional design)
+- ⚙️ Built **distributed execution engine** using:
+  - Celery · RabbitMQ · Dask · Kubernetes
+  - Enabled concurrent scheduling & on-demand execution at scale
+- 🔁 Developed **hyperparameter tuning framework**:
+  - Optuna + Dask + Joblib → scalable parallel optimization
+- 🌐 Built **FastAPI-based backend APIs** powering multiple microservices
+
+---
+
+#### 📊 Financial Forecasting (Reduced Risk Tobacco Products)
+- 📈 Built time-series forecasting models (Prophet, Statsmodels) → ~10% MAPE
+- ⚡ Reduced **30% development time** via reusable ML lifecycle framework (MLflow)
+- 📉 Improved prediction accuracy by **5%** via forward feature selection
+- 🔄 Processed large datasets via **PySpark (Hive → RDS pipelines)**
+- 🚀 Reduced **50% training time** by orchestrating **5000+ pipelines** using Dagster
+
+---
+
+#### 🧠 HELIX — Causal Inference & Decision Intelligence
+- 🔍 Built framework to identify key market drivers
+  - Combined **PCMCI causality + SHAP explainability**
+- 🧪 Developed **What-If simulation tool**
+  - FastAPI + React + RDS + S3
+  - Enabled business users to explore scenario outcomes
+- 🤝 Worked cross-functionally to deliver data-driven insights
+
+---
+
+#### 📦 Price Vision — Commodity Forecasting Platform
+- 🛠️ Built end-to-end ML pipeline (Scikit-learn, Optuna)
+- ☁️ Deployed via **Argo on Kubernetes (AKS)**
+- ⚡ Reduced **40% training time** using:
+  - Containerized workloads (Go + MongoDB)
+  - Parallel execution of **1000+ training jobs**
+
+---
+
+## 🛠️ Tech Stack
+
+**Languages**
+`Go` `Rust` `Python`
+
+**Backend & Systems**
+Distributed Systems · Event-Driven Architecture · DDD · Microservices · gRPC · REST
+
+**AI / MLOps**
+MLflow · Airflow · Argo · LangChain · RAG · AI Agents
+
+**Data & Storage**
+Kafka · Postgres · DynamoDB · Redis · Cassandra · Qdrant
+
+**Cloud & Infra**
+AWS · Azure · Kubernetes · Docker · Terraform · Datadog · CircleCI
+
+---
+
+## 🚀 Personal Projects
+
+### 🔧 J.A.M.S – Just Another Model Server
+- High-performance, cloud-agnostic ML serving system
+- Rust-based → low latency, high throughput
+- Multi-framework + OpenTelemetry observability
+
+---
+
+### 🤖 AutoRecAI – AI Recommendation System
+- Hybrid recommender + conversational AI
+- Full-stack system (Python + Rust + React)
+- End-to-end MLOps lifecycle
+
+---
+
+### 💳 Real-Time Fraud Detection
+- Streaming ML system using Spark
+- Real-time anomaly detection + ETL pipelines
+
+---
+
+### 💸 PaSys – Payment & Settlement System
+- Event-driven architecture
+- ACID-compliant ledger + reconciliation
+- Designed for fault tolerance
+
+---
+
+## 🧩 Interests
+
+- Distributed systems & system design
+- ML infrastructure & production AI
+- LLMs, agents, and RAG systems
+- High-performance backend systems (Rust/Go)
+
+---
+
+## 📌 Notes
+
+- Most production systems are **private (Deliveroo & Thoucentric)**
+- Happy to discuss architecture, trade-offs, and scaling decisions
+
+---
+
+## 📫 Reach Out
+
+If you're working on:
+- Distributed systems at scale
+- ML platforms / AI agents
+- AdTech / FinTech / Data platforms
+
+👉 Let’s connect
