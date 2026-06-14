@@ -1,22 +1,41 @@
-use crate::api::models::{ContactMeRequest, ContactMeResponse, PortfolioResponse};
-use crate::services::portfolio;
+use crate::api::models::{
+    ChatRequest, ChatResponse, ContactMeRequest, ContactMeResponse, PortfolioResponse,
+};
+use crate::services::{ai_assistant, portfolio};
 use axum::Json;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use deadpool_redis::{Config, Runtime};
+use rig::client::CompletionClient;
+use rig::completion::CompletionModel;
+use rig::providers::ollama;
 use serde_json::json;
 use std::sync::Arc;
 
-pub struct AppState {
+pub struct AppState<M: CompletionModel> {
     portfolio_service: Arc<portfolio::Service>,
+    ai_assistant_service: Arc<ai_assistant::Service<M>>,
 }
 
-impl AppState {
+impl AppState<ollama::CompletionModel> {
     pub fn new() -> Self {
         let resend_api_key = std::env::var("RESEND_API_KEY").expect("RESEND_API_KEY must be set");
         let portfolio_service = portfolio::Service::new(portfolio::Config { resend_api_key });
+
+        let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
+        // let redis_url = "redis://127.0.0.1:6379";
+        let redis_connection_pool = Config::from_url(redis_url)
+            .create_pool(Some(Runtime::Tokio1))
+            .unwrap();
+        let client = ollama::Client::new("").unwrap();
+        let model = client.completion_model("gemma4:12b");
+
+        let ai_assistant_service = ai_assistant::Service::new(redis_connection_pool, model);
+
         Self {
             portfolio_service: Arc::new(portfolio_service),
+            ai_assistant_service: Arc::new(ai_assistant_service),
         }
     }
 }
@@ -41,14 +60,14 @@ pub async fn healthcheck() -> impl IntoResponse {
 }
 
 pub async fn get_portfolio(
-    State(state): State<Arc<AppState>>,
+    State(state): State<Arc<AppState<ollama::CompletionModel>>>,
 ) -> Result<Json<PortfolioResponse>, ApiError> {
     let content = state.portfolio_service.get_content().await?;
     Ok(Json(content.into()))
 }
 
 pub async fn contact_me(
-    State(state): State<Arc<AppState>>,
+    State(state): State<Arc<AppState<ollama::CompletionModel>>>,
     Json(request): Json<ContactMeRequest>,
 ) -> Result<Json<ContactMeResponse>, ApiError> {
     // Validate
@@ -70,4 +89,18 @@ pub async fn contact_me(
         )
         .await?;
     Ok(Json(ContactMeResponse { id }))
+}
+
+pub async fn chat(
+    State(state): State<Arc<AppState<ollama::CompletionModel>>>,
+    Json(request): Json<ChatRequest>,
+) -> Result<Json<ChatResponse>, ApiError> {
+    let response = state
+        .ai_assistant_service
+        .chat(request.conversation_id.clone(), request.content)
+        .await?;
+    Ok(Json(ChatResponse {
+        conversation_id: request.conversation_id,
+        content: response,
+    }))
 }

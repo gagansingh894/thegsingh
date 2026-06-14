@@ -62,3 +62,15 @@ pub struct ContactMeRequest {
 pub struct ContactMeResponse {
     pub id: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ChatRequest {
+    pub conversation_id: String,
+    pub content: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ChatResponse {
+    pub conversation_id: String,
+    pub content: String,
+}
