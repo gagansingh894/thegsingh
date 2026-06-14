@@ -38,3 +38,9 @@ build:
 	cargo build --release
 
 all: format lint test
+
+run-anthropic:
+	cargo run --no-default-features --features anthropic
+
+run-ollama:
+	cargo run --no-default-features --features ollama

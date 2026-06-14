@@ -3,6 +3,12 @@ mod domain;
 mod repo;
 mod services;
 
+#[cfg(all(feature = "anthropic", feature = "ollama"))]
+compile_error!("only one of `anthropic` or `ollama` can be enabled");
+
+#[cfg(not(any(feature = "anthropic", feature = "ollama")))]
+compile_error!("one of `anthropic` or `ollama` must be enabled");
+
 use std::sync::Arc;
 
 use api::AppState;
