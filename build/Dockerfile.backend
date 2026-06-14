@@ -10,11 +10,11 @@ RUN apt-get update && apt-get install -y \
 
 COPY tgs-backend/Cargo.toml tgs-backend/Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release --no-default-features --features anthropic
+RUN cargo build --release
 RUN rm -f target/release/deps/tgs_backend*
 
 COPY tgs-backend/src ./src
-RUN cargo build --release
+RUN cargo build --release --no-default-features --features anthropic
 
 # Runtime stage
 FROM debian:bookworm-slim
