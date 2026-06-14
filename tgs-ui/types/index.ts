@@ -46,6 +46,11 @@ export interface PortfolioData {
 
 // ── Non-API types ────────────────────────────────────────────────────────────
 
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
 export interface StatItem {
   number: string;
   label: string;

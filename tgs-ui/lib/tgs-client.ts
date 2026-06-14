@@ -3,6 +3,7 @@ import type { PortfolioData } from "@/types";
 const API_BASE = process.env.PORTFOLIO_API_URL ?? "http://localhost:8080";
 const API_VERSION = "v1";
 const TIMEOUT_MS = 5000;
+const CHAT_TIMEOUT_MS = 30000;
 const REVALIDATE_SECONDS = 3600;
 
 // ── Error type ───────────────────────────────────────────────────────────────
@@ -71,5 +72,30 @@ export async function sendContactMessage(req: ContactRequest): Promise<void> {
   return apiPost<ContactRequest>("portfolio/contact", req);
 }
 
-// Future endpoints go here:
-// export async function sendChatMessage(...) { ... }
+export interface ChatRequest {
+  conversation_id: string;
+  content: string;
+}
+
+export interface ChatResponse {
+  conversation_id: string;
+  content: string;
+}
+
+export async function sendChatMessage(req: ChatRequest): Promise<ChatResponse> {
+  const res = await fetch(endpoint("assistant/chat"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    signal: AbortSignal.timeout(CHAT_TIMEOUT_MS),
+    body: JSON.stringify(req),
+  });
+
+  if (!res.ok) {
+    throw new TgsApiError(
+      res.status,
+      `[tgs-client] POST assistant/chat responded with ${res.status} ${res.statusText}`
+    );
+  }
+
+  return res.json() as Promise<ChatResponse>;
+}
