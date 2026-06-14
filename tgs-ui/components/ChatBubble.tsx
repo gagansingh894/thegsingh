@@ -1,12 +1,43 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { ChatMessage } from "@/types";
 
 const TYPEWRITER_INTERVAL_MS = 8;
 
+const mdComponents: React.ComponentProps<typeof ReactMarkdown>["components"] = {
+  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+  strong: ({ children }) => <strong className="font-semibold text-tgs-text">{children}</strong>,
+  em: ({ children }) => <em className="italic">{children}</em>,
+  ul: ({ children }) => <ul className="list-disc pl-4 mb-2 space-y-0.5">{children}</ul>,
+  ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 space-y-0.5">{children}</ol>,
+  li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+  pre: ({ children }) => <pre className="mb-2 overflow-x-auto bg-tgs-surface2 rounded-md px-3 py-2">{children}</pre>,
+  code: ({ className, children }) =>
+    className ? (
+      <code className="text-[11px] block">{children}</code>
+    ) : (
+      <code className="bg-tgs-surface2 rounded px-1 py-0.5 text-[11px]">{children}</code>
+    ),
+  a: ({ href, children }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-tgs-text underline underline-offset-2 hover:text-tgs-accent">
+      {children}
+    </a>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="border-l-2 border-tgs-border pl-3 text-tgs-muted italic mb-2">{children}</blockquote>
+  ),
+  h1: ({ children }) => <h1 className="font-semibold text-tgs-text text-[14px] mb-1 mt-2">{children}</h1>,
+  h2: ({ children }) => <h2 className="font-semibold text-tgs-text text-[13px] mb-1 mt-2">{children}</h2>,
+  h3: ({ children }) => <h3 className="font-semibold text-tgs-text text-[12px] mb-1 mt-1">{children}</h3>,
+  hr: () => <hr className="border-tgs-border my-2" />,
+};
+
 export default function ChatBubble() {
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,6 +103,7 @@ export default function ChatBubble() {
 
     setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
     setInput("");
+    if (inputRef.current) inputRef.current.style.height = "auto";
     setLoading(true);
 
     try {
@@ -105,7 +137,9 @@ export default function ChatBubble() {
 
       {/* Slide-up panel */}
       <div
-        className={`w-[340px] bg-tgs-surface border border-tgs-border rounded-xl overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.5)] transition-all duration-300 origin-bottom-right ${
+        className={`bg-tgs-surface border border-tgs-border rounded-xl overflow-hidden shadow-[0_16px_48px_rgba(0,0,0,0.5)] transition-all duration-300 origin-bottom-right ${
+          expanded ? "w-[520px]" : "w-[340px]"
+        } ${
           open
             ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
             : "opacity-0 scale-95 translate-y-4 pointer-events-none"
@@ -119,20 +153,49 @@ export default function ChatBubble() {
               Ask me anything
             </span>
           </div>
-          <button
-            onClick={() => setOpen(false)}
-            className="text-tgs-dim hover:text-tgs-muted transition-colors duration-150 p-0.5"
-            aria-label="Close chat"
-          >
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Expand / collapse */}
+            <button
+              onClick={() => setExpanded((v) => !v)}
+              className="text-tgs-dim hover:text-tgs-muted transition-colors duration-150 p-0.5"
+              aria-label={expanded ? "Collapse chat" : "Expand chat"}
+            >
+              {expanded ? (
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <polyline points="4 14 10 14 10 20" />
+                  <polyline points="20 10 14 10 14 4" />
+                  <line x1="10" y1="14" x2="3" y2="21" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+              )}
+            </button>
+            {/* Close */}
+            <button
+              onClick={() => setOpen(false)}
+              className="text-tgs-dim hover:text-tgs-muted transition-colors duration-150 p-0.5"
+              aria-label="Close chat"
+            >
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
-        <div className="h-[300px] overflow-y-auto px-4 py-4 flex flex-col gap-3">
+        <div
+          className={`overflow-y-auto px-4 py-4 flex flex-col gap-3 transition-all duration-300 ${
+            expanded ? "h-[520px]" : "h-[300px]"
+          }`}
+        >
           {isEmpty ? (
             <div className="flex flex-col items-center justify-center text-center gap-3 h-full">
               <div className="w-10 h-10 rounded-full border border-tgs-border flex items-center justify-center text-tgs-muted">
@@ -157,13 +220,19 @@ export default function ChatBubble() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[82%] px-3 py-2 rounded-lg font-mono text-[12px] leading-[1.7] whitespace-pre-wrap break-words ${
+                    className={`max-w-[82%] px-3 py-2 rounded-lg font-mono text-[12px] leading-[1.7] break-words ${
                       msg.role === "user"
-                        ? "bg-tgs-surface2 border border-tgs-border text-tgs-text"
+                        ? "bg-tgs-surface2 border border-tgs-border text-tgs-text whitespace-pre-wrap"
                         : "bg-tgs-bg border border-tgs-border text-tgs-body"
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === "assistant" ? (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
+                        {msg.content}
+                      </ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
                   </div>
                 </div>
               ))}
@@ -189,12 +258,16 @@ export default function ChatBubble() {
             <textarea
               ref={inputRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
               onKeyDown={handleKeyDown}
               disabled={loading}
               placeholder="Message..."
               rows={1}
-              className="font-mono text-[12px] text-tgs-text placeholder:text-tgs-dim flex-1 bg-transparent resize-none outline-none leading-[1.5] max-h-[80px] overflow-y-auto disabled:opacity-50"
+              className="font-mono text-[12px] text-tgs-text placeholder:text-tgs-dim flex-1 bg-transparent resize-none outline-none leading-[1.5] max-h-[160px] overflow-y-auto disabled:opacity-50"
             />
             <button
               onClick={sendMessage}
