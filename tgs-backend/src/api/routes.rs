@@ -1,7 +1,7 @@
 use crate::api::models::{
     ChatRequest, ChatResponse, ContactMeRequest, ContactMeResponse, PortfolioResponse,
 };
-use crate::services::{ai_assistant, portfolio};
+use crate::services::{ai_assistant, common, portfolio};
 use axum::Json;
 use axum::extract::State;
 use axum::http::StatusCode;
@@ -27,20 +27,25 @@ impl AppStateInner<rig::providers::anthropic::completion::CompletionModel> {
     #[cfg(feature = "anthropic")]
     pub fn new() -> Self {
         let resend_api_key = std::env::var("RESEND_API_KEY").expect("RESEND_API_KEY must be set");
-        let portfolio_service = portfolio::Service::new(portfolio::Config { resend_api_key });
+        let email_sender = common::email::EmailSender::new(resend_api_key);
 
         let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
         let redis_connection_pool = Config::from_url(redis_url)
             .create_pool(Some(Runtime::Tokio1))
             .unwrap();
 
-        let anthropic_api_key =
-            std::env::var("ANTHROPIC_API_KEY").expect("ANTHROPIC_API_KEY");
+        let anthropic_api_key = std::env::var("ANTHROPIC_API_KEY").expect("ANTHROPIC_API_KEY");
         let client = rig::providers::anthropic::Client::new(anthropic_api_key).unwrap();
         let model =
             client.completion_model(rig::providers::anthropic::completion::CLAUDE_HAIKU_4_5);
 
-        let ai_assistant_service = ai_assistant::Service::new(redis_connection_pool, model);
+        let portfolio_service = portfolio::Service::new(email_sender.clone());
+        let ai_assistant_service = ai_assistant::Service::new(
+            redis_connection_pool,
+            email_sender,
+            model,
+            rig::providers::anthropic::completion::CLAUDE_HAIKU_4_5,
+        );
 
         Self {
             portfolio_service: Arc::new(portfolio_service),
@@ -53,7 +58,7 @@ impl AppStateInner<rig::providers::ollama::CompletionModel> {
     #[cfg(feature = "ollama")]
     pub fn new() -> Self {
         let resend_api_key = std::env::var("RESEND_API_KEY").expect("RESEND_API_KEY must be set");
-        let portfolio_service = portfolio::Service::new(portfolio::Config { resend_api_key });
+        let email_sender = common::email::EmailSender::new(resend_api_key);
 
         let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
         let redis_connection_pool = Config::from_url(redis_url)
@@ -63,7 +68,9 @@ impl AppStateInner<rig::providers::ollama::CompletionModel> {
         let client = rig::providers::ollama::Client::new("").unwrap();
         let model = client.completion_model("gemma4:12b");
 
-        let ai_assistant_service = ai_assistant::Service::new(redis_connection_pool, model);
+        let portfolio_service = portfolio::Service::new(email_sender.clone());
+        let ai_assistant_service =
+            ai_assistant::Service::new(redis_connection_pool, email_sender, model, "gemma4:12b");
 
         Self {
             portfolio_service: Arc::new(portfolio_service),
@@ -127,10 +134,17 @@ pub async fn chat(
     State(state): State<Arc<AppState>>,
     Json(request): Json<ChatRequest>,
 ) -> Result<Json<ChatResponse>, ApiError> {
-    let response = state
+    let response = match state
         .ai_assistant_service
         .chat(request.conversation_id.clone(), request.content)
-        .await?;
+        .await
+    {
+        Ok(response) => response,
+        Err(e) => {
+            println!("{}", e);
+            return Err(ApiError(anyhow::anyhow!(e)));
+        }
+    };
     Ok(Json(ChatResponse {
         conversation_id: request.conversation_id,
         content: response,
