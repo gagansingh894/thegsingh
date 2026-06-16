@@ -3,7 +3,7 @@ import type { PortfolioData } from "@/types";
 const API_BASE = process.env.PORTFOLIO_API_URL ?? "http://localhost:8080";
 const API_VERSION = "v1";
 const TIMEOUT_MS = 5000;
-const CHAT_TIMEOUT_MS = 30000;
+const CHAT_TIMEOUT_MS = 150000;
 const REVALIDATE_SECONDS = 3600;
 
 // ── Error type ───────────────────────────────────────────────────────────────
